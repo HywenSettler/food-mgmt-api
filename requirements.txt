@@ -1,0 +1,6 @@
+Flask
+Flask-RESTFul
+Flask-JWT-Extended
+Flask-SQLAlchemy
+gunicorn
+psycopg2
