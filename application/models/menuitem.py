@@ -12,7 +12,7 @@ class MenuItem(db.Model):
     __tablename__ = 'menuitems'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50))
+    name = db.Column(db.String(100))
     type = db.Column(db.Enum(MenuItemTypeEnum))
     image_url = db.Column(db.String(400))
 
