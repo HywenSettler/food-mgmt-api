@@ -14,6 +14,7 @@ class User(db.Model):
     state = db.Column(db.String(50))
     pincode = db.Column(db.String(6))
     address = db.Column(db.String(200))
+    phoneNumber = db.Column(db.String(13))
     menu = db.relationship('MenuItem', secondary=menus, backref=db.backref('users', lazy='dynamic'))
 
     def to_json(self):
@@ -25,5 +26,6 @@ class User(db.Model):
             'city': self.city,
             'state': self.state,
             'pincode': self.pincode,
-            'address': self.address
+            'address': self.address,
+            'phoneNumber': self.phoneNumber
         }
