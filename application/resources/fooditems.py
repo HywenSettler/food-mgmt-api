@@ -12,15 +12,19 @@ mapping = {
 
 class FoodItems(Resource):
     def get(self):
-        found_items = MenuItem.query.all()  # select * from menuitems
-        if found_items:
-            return [item.to_json() for item in found_items], 200
+        item_type = request.args.get('type')
+        search_query = request.args.get('searchQuery')
+        # select * from menuitems where type=item_type and name like "{searchQuery}%"
+        found_items = MenuItem.query.filter_by(
+            type=mapping.get(item_type)).filter(
+            MenuItem.name.like(f"{search_query}%")).all()
 
-        return {'message': 'Item not found'}, 404
+        return [item.to_json() for item in found_items], 200
 
     def post(self):
         data = request.get_json()
-        new_item = MenuItem(data['name'], mapping.get(data['type']), data['image_url'])
-        db.session.add(new_item)
-        db.session.commit()
-        return new_item.to_json(), 201
+        for food_item in data:
+            new_item = MenuItem(food_item['name'], mapping.get(food_item['type']), food_item['image_url'])
+            db.session.add(new_item)
+            db.session.commit()
+        return {'message': 'Items added to DB successfully'}, 201
