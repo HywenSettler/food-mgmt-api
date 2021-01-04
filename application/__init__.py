@@ -32,7 +32,7 @@ def create_app():
         return decrypted_token['jti'] in BLACKLIST
 
     api.add_resource(FoodItems, '/items')
-    api.add_resource(MessMenu, '/menu/<string:user_id>')
+    api.add_resource(MessMenu, '/menu')
     api.add_resource(UserRegister, '/register')
     api.add_resource(UserLogin, '/login')
     api.add_resource(UserLogout, '/logout')
