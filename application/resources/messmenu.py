@@ -19,6 +19,7 @@ class MessMenu(Resource):
 
     @jwt_required
     def post(self):
+        data = request.get_json()
         user_id = get_jwt_identity()
         found_user = User.query.filter_by(id=user_id).first()
         for item_id in data:
