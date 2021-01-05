@@ -5,7 +5,8 @@ from flask_jwt_extended import (
     get_jwt_identity,
     create_access_token,
     create_refresh_token,
-    get_raw_jwt
+    get_raw_jwt,
+    jwt_refresh_token_required
 )
 
 
@@ -58,3 +59,12 @@ class UserLogin(Resource):
             }, 200
 
         return {'message': 'Invalid credentials'}, 401
+
+
+class TokenRefresh(Resource):
+    @jwt_refresh_token_required
+    def post(self):
+        current_user = get_jwt_identity()
+        new_token = create_access_token(identity=current_user, fresh=False)
+
+        return {'access_token': new_token}, 200
