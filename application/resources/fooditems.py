@@ -14,10 +14,10 @@ class FoodItems(Resource):
     def get(self):
         item_type = request.args.get('type')
         search_query = request.args.get('searchQuery')
-        # select * from menuitems where type=item_type and name ilike "{searchQuery}%"
+        # select * from menuitems where type=item_type and name ilike "%{searchQuery}%"
         found_items = MenuItem.query.filter_by(
             type=mapping.get(item_type)).filter(
-            MenuItem.name.ilike(f"{search_query}%")).all()
+            MenuItem.name.ilike(f"%{search_query}%")).all()
 
         return [item.to_json() for item in found_items], 200
 

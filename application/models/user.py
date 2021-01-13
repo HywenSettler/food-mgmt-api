@@ -10,11 +10,12 @@ class User(db.Model):
     password = db.Column(db.String(50))
     orgName = db.Column(db.String(100))
     isNGO = db.Column(db.Boolean)
+    isMenuCreated = db.Column(db.Boolean, default=lambda: False)
     city = db.Column(db.String(50))
     state = db.Column(db.String(50))
     pincode = db.Column(db.String(6))
     address = db.Column(db.String(200))
-    phoneNumber = db.Column(db.String(13))
+    phoneNumber = db.Column(db.String(10))
     profileImageUrl = db.Column(db.String(400))
     menu = db.relationship('MenuItem', secondary=menus, backref=db.backref('users', lazy='dynamic'))
 
@@ -29,5 +30,6 @@ class User(db.Model):
             'pincode': self.pincode,
             'address': self.address,
             'phoneNumber': self.phoneNumber,
-            'profileImageUrl': self.profileImageUrl
+            'profileImageUrl': self.profileImageUrl,
+            'isMenuCreated': self.isMenuCreated
         }

@@ -25,5 +25,7 @@ class MessMenu(Resource):
         for item_id in data:
             found_item = MenuItem.query.filter_by(id=item_id).first()  # select * from menuitems where id=item_id
             found_user.menu.append(found_item)
+        found_user.isMenuCreated = True
+
         db.session.commit()
         return {'message': 'menu created successfully'}, 201
