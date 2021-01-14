@@ -32,6 +32,7 @@ class Receive(Resource):
             found_item = MenuItem.query.filter_by(id=donation.foodId).first()
             found_donor = User.query.filter_by(id=donation.donor).first()
             ret_arr.append({
+                'id': donation.id,
                 'donor': found_donor.to_json(),
                 'food': {
                     **found_item.to_json(),
@@ -45,7 +46,7 @@ class Receive(Resource):
     def post(self):
         user_id = get_jwt_identity()
         data = request.get_json()
-        found_donation = Donation.query.filter_by(donor=data['donorId']).first()
+        found_donation = Donation.query.filter_by(id=data['donationId']).first()
         found_donation.recipient = user_id
         db.session.commit()
 
