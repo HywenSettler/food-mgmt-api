@@ -7,7 +7,7 @@ from flask_jwt_extended import JWTManager
 
 from .resources.fooditems import FoodItems
 from .resources.messmenu import MessMenu
-from .resources.donations import Donate, Receive
+from .resources.donations import Donate, Receive, History
 from .resources.user import (
     UserRegister,
     UserLogin,
@@ -47,6 +47,7 @@ def create_app():
     api.add_resource(TokenRefresh, '/refresh')
     api.add_resource(Donate, '/donate')
     api.add_resource(Receive, '/receive')
+    api.add_resource(History, '/history')
 
     with app.app_context():
         db.create_all()

@@ -42,7 +42,7 @@ class Receive(Resource):
 
         return ret_arr, 200
 
-    @ jwt_required
+    @jwt_required
     def post(self):
         user_id = get_jwt_identity()
         data = request.get_json()
@@ -51,3 +51,26 @@ class Receive(Resource):
         db.session.commit()
 
         return {'message': 'Donation was received successfully'}, 201
+
+
+class History(Resource):
+    @jwt_required
+    def get(self):
+        user_id = get_jwt_identity()
+        accept_history = Donation.query.filter_by(recipient=user_id).all()
+
+        ret_arr = []
+
+        for donation in accept_history:
+            found_item = MenuItem.query.filter_by(id=donation.foodId).first()
+            found_donor = User.query.filter_by(id=donation.donor).first()
+            ret_arr.append({
+                'id': donation.id,
+                'donor': found_donor.to_json(),
+                'food': {
+                    **found_item.to_json(),
+                    'quantity': donation.quantity
+                }
+            })
+
+        return ret_arr, 200
