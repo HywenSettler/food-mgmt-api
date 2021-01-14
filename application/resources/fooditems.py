@@ -16,7 +16,7 @@ class FoodItems(Resource):
         search_query = request.args.get('searchQuery')
         # select * from menuitems where type=item_type and name ilike "%{searchQuery}%"
         if not item_type:
-            found_items = MenuItem.query(
+            found_items = db.session.query(
                 MenuItem.name.distinct()).filter(
                 MenuItem.name.ilike(f"%{search_query}%")).all()
         else:
