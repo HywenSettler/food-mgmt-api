@@ -1,5 +1,6 @@
 from flask import request
 from flask_restful import Resource
+import bcrypt
 from flask_jwt_extended import (
     jwt_required,
     get_jwt_identity,
@@ -15,6 +16,11 @@ from ..db import db
 from ..models.user import User
 
 
+def verify_pw(user, given_password):
+    hashed_pw = user.password
+    return bcrypt.hashpw(given_password.encode('utf8'), hashed_pw) == hashed_pw
+
+
 class UserDetail(Resource):
     @jwt_required
     def get(self):
@@ -28,6 +34,8 @@ class UserRegister(Resource):
     def post(self):
         data = request.get_json()
         print(data)
+        # hashing the password
+        data['password'] = bcrypt.hashpw(data['password'].encode('utf8'), bcrypt.gensalt())
         new_user = User(**data)
         db.session.add(new_user)
         db.session.commit()
@@ -46,7 +54,8 @@ class UserLogin(Resource):
     def post(self):
         data = request.get_json()
         found_user = User.query.filter_by(email=data['email']).first()
-        if found_user and found_user.password == data['password']:
+
+        if found_user and verify_pw(found_user, data['password']):
             access_token = create_access_token(identity=found_user.id, fresh=True)
             refresh_token = create_refresh_token(found_user.id)
 
@@ -58,7 +67,7 @@ class UserLogin(Resource):
                 }
             }, 200
 
-        return {'message': 'Invalid credentials'}, 401
+        return {'message': 'Invalid credentials'}, 422
 
 
 class TokenRefresh(Resource):

@@ -2,6 +2,7 @@ Flask
 flask-cors
 Flask-RESTFul
 Flask-JWT-Extended
+bcrypt
 Flask-SQLAlchemy
 gunicorn
 psycopg2

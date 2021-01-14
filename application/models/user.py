@@ -7,7 +7,7 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(50))
-    password = db.Column(db.String(50))
+    password = db.Column(db.String(60))
     orgName = db.Column(db.String(100))
     isNGO = db.Column(db.Boolean)
     isMenuCreated = db.Column(db.Boolean, default=lambda: False)
@@ -22,7 +22,6 @@ class User(db.Model):
     def to_json(self):
         return {
             'email': self.email,
-            'password': self.password,
             'orgName': self.orgName,
             'isNGO': self.isNGO,
             'city': self.city,
