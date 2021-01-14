@@ -7,7 +7,7 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(50))
-    password = db.Column(db.String(100))
+    password = db.Column(db.LargeBinary)
     orgName = db.Column(db.String(100))
     isNGO = db.Column(db.Boolean)
     isMenuCreated = db.Column(db.Boolean, default=lambda: False)
